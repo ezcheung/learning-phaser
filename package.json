@@ -1,0 +1,11 @@
+{
+  "name": "learning-phaser",
+  "version": "1.0.0",
+  "scripts": {
+    
+  },
+  "dependencies": {
+    "phaser": "^2.6.2",
+  },
+  "author": "Elliot Cheung"
+}
