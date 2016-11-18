@@ -5,6 +5,8 @@ let player;
 let baddies;
 let score = 0;
 let scoreText;
+let alive = true;
+let spacebar;
 
 function preload(){
   game.load.image("background", "assets/background.png");
@@ -23,39 +25,56 @@ function create(){
   baddies = game.add.group();
   baddies.enableBody = true;
 
-  scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+  scoreText = game.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
 
   cursors = game.input.keyboard.createCursorKeys();
+  spacebar = game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 }
 
 function update(){
   player.body.velocity.x = 0;
 
-  if (cursors.left.isDown)
-  {
-      //  Move to the left
-      player.body.velocity.x = -150;
-  }
-  else if (cursors.right.isDown)
-  {
-      //  Move to the right
-      player.body.velocity.x = 150;
-  }
+  if(alive) {
+    if (cursors.left.isDown)
+    {
+        //  Move to the left
+        player.body.velocity.x = -150;
+    }
+    else if (cursors.right.isDown)
+    {
+        //  Move to the right
+        player.body.velocity.x = 150;
+    }
 
-  let makeBaddie = Math.random() * 100;
-  if(makeBaddie < 10) {
-    let baddie = baddies.create(Math.floor(Math.random() * 800), 0, 'blacksquare');
-    baddie.body.gravity.y = 300;
-    baddie.checkWorldBounds = true;
-    baddie.outOfBoundsKill = true;
-    // baddie..onKilled = new Phaser.Signal();
-    baddie.events.onKilled.add(addScore, this);
-  }
+    let makeBaddie = Math.random() * 100;
+    if(makeBaddie < 10) {
+      let baddie = baddies.create(Math.floor(Math.random() * 800), 0, 'blacksquare');
+      baddie.body.gravity.y = 300;
+      baddie.checkWorldBounds = true;
+      baddie.outOfBoundsKill = true;
+      baddie.events.onKilled.add(addScore, this);
+    }
 
-  // game.physics.arcade.overlap(player, baddies, die, null, this);
+    game.physics.arcade.overlap(player, baddies, die, null, this);
+  }
 }
 
 function addScore() {
-  score += 10;
-  scoreText.text = `Score: ${score}`;
+  if(alive){
+    score += 10;
+    scoreText.text = `Score: ${score}`;
+  }
+}
+
+function die() {
+  alive = false;
+  player.body.velocity.x = 0;
+  baddies.forEach((b) => {
+    b.body.gravity.y = 0;
+    b.body.velocity.y = 0;
+  });
+}
+
+function restart() {
+  
 }
