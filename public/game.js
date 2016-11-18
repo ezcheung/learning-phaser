@@ -3,6 +3,8 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 let cursors;
 let player;
 let baddies;
+let score = 0;
+let scoreText;
 
 function preload(){
   game.load.image("background", "assets/background.png");
@@ -20,6 +22,8 @@ function create(){
 
   baddies = game.add.group();
   baddies.enableBody = true;
+
+  scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
   cursors = game.input.keyboard.createCursorKeys();
 }
@@ -42,5 +46,16 @@ function update(){
   if(makeBaddie < 10) {
     let baddie = baddies.create(Math.floor(Math.random() * 800), 0, 'blacksquare');
     baddie.body.gravity.y = 300;
-  }  
+    baddie.checkWorldBounds = true;
+    baddie.outOfBoundsKill = true;
+    // baddie..onKilled = new Phaser.Signal();
+    baddie.events.onKilled.add(addScore, this);
+  }
+
+  // game.physics.arcade.overlap(player, baddies, die, null, this);
+}
+
+function addScore() {
+  score += 10;
+  scoreText.text = `Score: ${score}`;
 }
