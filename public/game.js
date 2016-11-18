@@ -7,6 +7,7 @@ let score = 0;
 let scoreText;
 let alive = true;
 let spacebar;
+let loseText;
 
 function preload(){
   game.load.image("background", "assets/background.png");
@@ -77,6 +78,8 @@ function die() {
     b.body.gravity.y = 0;
     b.body.velocity.y = 0;
   });
+  loseText = game.add.text(125, 250, "You lose! Press spacebar to restart", 
+    { fontSize: '32px', fill: '#000', boundsAlignH: 'center', boundsAlignV: 'center'});
 }
 
 function restart() {
@@ -88,4 +91,5 @@ function restart() {
   player.position.x = 375;
   player.position.y = 550;
   alive = true;
+  if(loseText) loseText.kill();
 }
