@@ -56,6 +56,10 @@ function update(){
     }
 
     game.physics.arcade.overlap(player, baddies, die, null, this);
+  } else {
+    if(spacebar.isDown) {
+      restart();
+    }
   }
 }
 
@@ -76,5 +80,12 @@ function die() {
 }
 
 function restart() {
-  
+  baddies.forEach((b) => {
+    b.kill();
+  })
+  score = 0;
+  scoreText.text = "Score: 0";
+  player.position.x = 375;
+  player.position.y = 550;
+  alive = true;
 }
