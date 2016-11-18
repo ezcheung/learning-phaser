@@ -2,7 +2,7 @@
   "name": "learning-phaser",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon tutorial/server/server.js"
+    "start": "nodemon server/server.js"
   },
   "dependencies": {
     "express": "^4.14.0",
