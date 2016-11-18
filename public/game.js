@@ -8,6 +8,8 @@ let scoreText;
 let alive = true;
 let spacebar;
 let loseText;
+let numSquares = 0;
+let maxSquares = 30;
 
 function preload(){
   game.load.image("background", "assets/background.png");
@@ -39,18 +41,19 @@ function update(){
     if (cursors.left.isDown)
     {
         //  Move to the left
-        player.body.velocity.x = -150;
+        player.body.velocity.x = -250;
     }
     else if (cursors.right.isDown)
     {
         //  Move to the right
-        player.body.velocity.x = 150;
+        player.body.velocity.x = 250;
     }
 
     let makeBaddie = Math.random() * 100;
-    if(makeBaddie < 10) {
+    if(makeBaddie < 40 && numSquares < maxSquares) {
       let baddie = baddies.create(Math.floor(Math.random() * 800), 0, 'blacksquare');
-      baddie.body.gravity.y = 300;
+      baddie.body.gravity.y = 400;
+      numSquares += 1;
       baddie.checkWorldBounds = true;
       baddie.outOfBoundsKill = true;
       baddie.events.onKilled.add(addScore, this);
@@ -66,6 +69,7 @@ function update(){
 
 function addScore() {
   if(alive){
+    numSquares -= 1;
     score += 10;
     scoreText.text = `Score: ${score}`;
   }
@@ -87,6 +91,7 @@ function restart() {
     b.kill();
   })
   score = 0;
+  numSquares = 0;
   scoreText.text = "Score: 0";
   player.position.x = 375;
   player.position.y = 550;
